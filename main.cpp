@@ -3,22 +3,38 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <array>
+#include <thread>
+#include <chrono>
+#include <functional>
+#include <atomic>
+#include <mutex>
+
 using namespace std;
 
 
 #define M_PI           3.14159265358979323846  /* pi */
 #define STATIC_BODY_DENSITY 0.1
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
+#define RENDER_SCALE 4
 
 
 #define GRAVITY_CONSTANT 9.81
 
 float particle_mass = 10;
 
+
+atomic<bool> stopFlag(false);
+
+sf::Image sharedRenderImage;
+sf::Texture sharedRenderTexture;
+sf::Sprite gravityBasinsSprite;
+std::atomic<bool> updateRequired(false);
+std::mutex imageMutex;
+
 struct Trajectory
 {
-    std::vector<sf::Vector2f> points;
+    vector<sf::Vector2f> points;
 };
 
 
@@ -44,6 +60,13 @@ class StaticBody{
             circle.setFillColor(color);
 
             renderTexture.draw(circle);
+
+            sf::CircleShape circle2(radius/2);
+            circle2.setPosition(pos);
+            circle2.setOrigin(sf::Vector2f(radius/2, radius/2));
+            circle2.setFillColor(sf::Color::Black);
+
+            renderTexture.draw(circle2);
         }
 };
 
@@ -84,7 +107,8 @@ bool colidesWithAny(vector<StaticBody> bodies, sf::Vector2f pos){
     return false;
 }
 
-Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f start_pos, int maxSize = 10000, bool detectCollisions = true){
+Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f start_pos, int maxSize = 15000, 
+                              float stepSize = 1, bool detectCollisions = true){
     Trajectory traj;
 
     traj.points.push_back(start_pos);
@@ -99,12 +123,34 @@ Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f start_pos,
         }
 
         vel += netGravityForce(bodies, pos)/particle_mass;
-        pos += vel;
+        pos += vel*stepSize;
 
         traj.points.push_back(pos);
     }
 
     return traj;
+}
+
+StaticBody getCrashingBody(vector<StaticBody> bodies, sf::Vector2f start_pos, int maxSize = 15000, float stepSize = 1){
+    sf::Vector2f pos = start_pos;
+    sf::Vector2f vel = {0,0};
+    for (int step = 0; step < maxSize; step++){
+
+        if(colidesWithAny(bodies, pos))
+
+            for(const auto& body: bodies){
+                if (getDistanceSquared(body.pos, pos) <= body.radius * body.radius)
+                return body;
+        }
+
+        vel += netGravityForce(bodies, pos)/particle_mass;
+        pos += vel*stepSize;
+    }
+
+    cout << "no crashes for point: (" << start_pos.x << ", " << start_pos.y << ") after " << maxSize << " steps" << endl;
+
+    //return a new static body with black color for simplicty
+    return StaticBody({0,0},0, sf::Color::Black);
 }
 
 sf::Texture createBodiesTexture(vector<StaticBody> bodies){
@@ -125,7 +171,7 @@ sf::Texture createBodiesTexture(vector<StaticBody> bodies){
     return renderTexture.getTexture();
 }
 
-sf::Texture createTrajectortTexture(Trajectory trajectory, int pointRadius = 1){
+sf::Texture createTrajectortTexture(Trajectory trajectory, float pointRadius = 1, sf::Color color = sf::Color::Red){
     // Create a RenderTexture to draw trajectory points
     sf::RenderTexture renderTexture;
     renderTexture.create(WINDOW_WIDTH, WINDOW_HEIGHT); // Use the same size as the image
@@ -136,7 +182,7 @@ sf::Texture createTrajectortTexture(Trajectory trajectory, int pointRadius = 1){
         sf::CircleShape circle(pointRadius);
         circle.setPosition(point);
         circle.setOrigin(sf::Vector2f(pointRadius, pointRadius));
-        circle.setFillColor(sf::Color::Red);
+        circle.setFillColor(color);
 
         renderTexture.draw(circle);
     }
@@ -147,11 +193,49 @@ sf::Texture createTrajectortTexture(Trajectory trajectory, int pointRadius = 1){
 
 }
 
-int main() {
+void liveRenderGravityBasin(vector<StaticBody>& bodies){
+    sf::Image renderBufferImage;
+    renderBufferImage.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE);
 
-    vector<StaticBody> static_bodies = {StaticBody({400, 105}, 100, sf::Color::White),
-                                        StaticBody({150, 300}, 100, sf::Color(150, 12, 21)),
-                                        StaticBody({600, 415}, 100, sf::Color::White)};
+    for (int x = 0; x<WINDOW_WIDTH * RENDER_SCALE; x++){
+        for (int y=0; y<WINDOW_HEIGHT * RENDER_SCALE; y++){
+            if (stopFlag.load()){
+                cout << endl << "render thread closed prematurely" << endl;
+                return;
+            }
+            
+            int currentPixel = x*y + y;
+
+            
+            if (currentPixel % 10000 == 0)
+            {
+                // Lock the mutex to safely update the image
+                {
+                    lock_guard<std::mutex> lock(imageMutex);
+                    
+                    // Simulate image update
+                    
+                    sharedRenderImage.copy(renderBufferImage, 0, 0);
+
+                    // Flag that the image needs to be updated
+                    updateRequired.store(true);
+                }
+            }
+
+
+
+            StaticBody crashingBody = getCrashingBody(bodies, {(float)x/ RENDER_SCALE, (float)y/RENDER_SCALE}, 15000, 20);
+            renderBufferImage.setPixel(x, y, crashingBody.color);
+
+
+    }}
+        
+}
+
+int main() {
+    vector<StaticBody> static_bodies = {StaticBody({400, 105}, 100, sf::Color(0, 201, 167)),
+                                        StaticBody({150, 300}, 100, sf::Color(189, 56, 178)),
+                                        StaticBody({600, 415}, 100, sf::Color(212, 55, 37))};
 
 
 
@@ -172,34 +256,89 @@ int main() {
     sf::Sprite bodiesSprite(bodiesTexture);
 
     // Create a window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Live Rendering");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Live Rendering");
 
 
     int traj_steps = 1;
+
+    sharedRenderImage.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE, sf::Color::White);
+    sharedRenderTexture.loadFromImage(sharedRenderImage);
+    sharedRenderTexture.setSmooth(true);
+
+    gravityBasinsSprite.setTexture(sharedRenderTexture);
+    gravityBasinsSprite.setScale(1.0f/RENDER_SCALE, 1.0f/RENDER_SCALE);
+
+    thread liveRenderThread(liveRenderGravityBasin, ref(static_bodies));
+    
 
     // Simulate a render process
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){// imagine forgeting to put parethesis here so every time you move mouse onto window the app closes and you have no idea why and you remove the stop flag and it starts working but doesntt make any sense untill one hour later you fucking notice....
+                // Set the flag to stop the thread
+                stopFlag.store(true);
+
+                //close the app window
                 window.close();
+            }
 
 
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::R) {
+                    traj_steps = 1;
+                }
+            }
+        }
+
+        // Update the texture if the image has been updated
+        if (updateRequired.load()) {
+            
+            std::lock_guard<std::mutex> lock(imageMutex);
+            sharedRenderTexture.update(sharedRenderImage); 
+            updateRequired.store(false);
+            
         }
 
         window.clear();
+    
 
+
+        
+        // Draw the image sprite
+        window.draw(gravityBasinsSprite);
+
+
+
+
+/*
 
         Trajectory testTrajectory = generateTrajectory(static_bodies, {200,100}, traj_steps);
-        sf::Texture trajectoryTexture = createTrajectortTexture(testTrajectory);  
+        sf::Texture trajectoryTexture = createTrajectortTexture(testTrajectory, 2);  
 
         // Create a sprite to display the image
         sf::Sprite trajectorySprite(trajectoryTexture);
 
-        
-        // Draw the image sprite
+
+
+        Trajectory testTrajectory2 = generateTrajectory(static_bodies, {200,100}, traj_steps, 25);
+        sf::Texture trajectoryTexture2 = createTrajectortTexture(testTrajectory2, 1.5, sf::Color::Blue);  
+
+        // Create a sprite to display the image
+        sf::Sprite trajectorySprite2(trajectoryTexture2);
+
+
+
         window.draw(trajectorySprite);
-        
+        window.draw(trajectorySprite2);
+
+*/
+
+
+
+
+
+
         // Draw the circle sprite
         window.draw(bodiesSprite);
         
@@ -207,6 +346,12 @@ int main() {
 
         traj_steps ++;
 
+    }
+    
+
+    if (liveRenderThread.joinable()) {
+        liveRenderThread.join();
+        stopFlag.store(false);
     }
 
     return 0;
