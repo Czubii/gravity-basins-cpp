@@ -16,10 +16,15 @@ using namespace std;
 #define STATIC_BODY_DENSITY 0.1
 #define WINDOW_WIDTH 500
 #define WINDOW_HEIGHT 500
-#define RENDER_SCALE 4
-
+#define RENDER_SCALE 8.0f
 
 #define GRAVITY_CONSTANT 9.81
+
+#define UPDATE_EVERY 30000
+
+#define SAVE_TO_FIZE true
+#define SAVE_FILENAME "test.png"
+
 
 float particle_mass = 10;
 
@@ -54,17 +59,17 @@ class StaticBody{
         }
 
         void render(sf::RenderTexture& renderTexture){
-            sf::CircleShape circle(radius);
-            circle.setPosition(pos);
-            circle.setOrigin(sf::Vector2f(radius, radius));
-            circle.setFillColor(color);
+            sf::CircleShape circle(radius*RENDER_SCALE);
+            circle.setPosition(pos*RENDER_SCALE);
+            circle.setOrigin(sf::Vector2f(radius*RENDER_SCALE, radius*RENDER_SCALE));
+            circle.setFillColor(sf::Color::Black);
 
             renderTexture.draw(circle);
 
-            sf::CircleShape circle2(radius/2);
-            circle2.setPosition(pos);
-            circle2.setOrigin(sf::Vector2f(radius/2, radius/2));
-            circle2.setFillColor(sf::Color::Black);
+            sf::CircleShape circle2(radius/1.2*RENDER_SCALE);
+            circle2.setPosition(pos*RENDER_SCALE);
+            circle2.setOrigin(sf::Vector2f(radius/1.2*RENDER_SCALE, radius/1.2*RENDER_SCALE));
+            circle2.setFillColor(color);
 
             renderTexture.draw(circle2);
         }
@@ -157,7 +162,7 @@ sf::Texture createBodiesTexture(vector<StaticBody> bodies){
 
     // Create a RenderTexture to draw bodies
     sf::RenderTexture renderTexture;
-    renderTexture.create(WINDOW_WIDTH, WINDOW_HEIGHT); // Use the same size as the image
+    renderTexture.create(WINDOW_WIDTH*RENDER_SCALE, WINDOW_HEIGHT*RENDER_SCALE); // Use the same size as the image
     renderTexture.clear(sf::Color::Transparent); 
 
     for(auto& body: bodies){
@@ -207,14 +212,13 @@ void liveRenderGravityBasin(vector<StaticBody>& bodies){
             int currentPixel = x*y + y;
 
             
-            if (currentPixel % 10000 == 0)
+            if (currentPixel % UPDATE_EVERY == 0)
             {
                 // Lock the mutex to safely update the image
                 {
                     lock_guard<std::mutex> lock(imageMutex);
                     
-                    // Simulate image update
-                    
+                    //update shared display image  
                     sharedRenderImage.copy(renderBufferImage, 0, 0);
 
                     // Flag that the image needs to be updated
@@ -229,13 +233,26 @@ void liveRenderGravityBasin(vector<StaticBody>& bodies){
 
 
     }}
+    // Lock the mutex to safely update the image
+    {
+        lock_guard<std::mutex> lock(imageMutex);
+                    
+
+        //update shared display image 
+        sharedRenderImage.copy(renderBufferImage, 0, 0);
+
+         // Flag that the image needs to be updated
+        updateRequired.store(true);
+    }
+    if (SAVE_TO_FIZE)
+    renderBufferImage.saveToFile(SAVE_FILENAME);
         
 }
 
 int main() {
     vector<StaticBody> static_bodies = {StaticBody({400, 105}, 100, sf::Color(0, 201, 167)),
                                         StaticBody({150, 300}, 100, sf::Color(189, 56, 178)),
-                                        StaticBody({600, 415}, 100, sf::Color(212, 55, 37))};
+                                        StaticBody({60, 140}, 100, sf::Color(212, 55, 37))};
 
 
 
@@ -250,10 +267,12 @@ int main() {
 
     //-----------   Creating bodies sprite   -----------
 
-    //create a variable for texture so it fucking works after 1000000hours debuging
+    //create and keep in memora a variable for texture so it fucking works after 1000000hours debuging
     sf::Texture bodiesTexture = createBodiesTexture(static_bodies);
+    bodiesTexture.setSmooth(true);
     // Create a Sprite to display the bodies
     sf::Sprite bodiesSprite(bodiesTexture);
+    bodiesSprite.setScale(1.0f/RENDER_SCALE,1.0f/RENDER_SCALE);
 
     // Create a window
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Live Rendering");
@@ -307,6 +326,9 @@ int main() {
         
         // Draw the image sprite
         window.draw(gravityBasinsSprite);
+
+    
+
 
 
 
