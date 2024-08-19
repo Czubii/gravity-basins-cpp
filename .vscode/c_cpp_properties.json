@@ -22,7 +22,6 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${vcpkgRoot}/x64-windows/include",
-                "${vcpkgRoot}/x86-windows/include"
             ],
             "defines": [
                 "_DEBUG",

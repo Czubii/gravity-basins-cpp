@@ -14,19 +14,21 @@ using namespace std;
 
 #define M_PI           3.14159265358979323846  /* pi */
 #define STATIC_BODY_DENSITY 0.1
-#define WINDOW_WIDTH 500
-#define WINDOW_HEIGHT 500
-#define RENDER_SCALE 8.0f
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 800
+#define RENDER_SCALE 2.0f
 
 #define GRAVITY_CONSTANT 9.81
 
 #define UPDATE_EVERY 30000
 
-#define SAVE_TO_FIZE true
+#define RENDER_THREADS 10
+
+#define SAVE_TO_FIZE true//TODO
 #define SAVE_FILENAME "test.png"
 
 
-float particle_mass = 10;
+float particle_mass = 100;
 
 
 atomic<bool> stopFlag(false);
@@ -198,18 +200,18 @@ sf::Texture createTrajectortTexture(Trajectory trajectory, float pointRadius = 1
 
 }
 
-void liveRenderGravityBasin(vector<StaticBody>& bodies){
+void liveRenderGravityBasin(vector<StaticBody>& bodies, int renderStartX = 0, int renderWidth = WINDOW_WIDTH){
     sf::Image renderBufferImage;
-    renderBufferImage.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE);
+    renderBufferImage.create(renderWidth * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE);
 
-    for (int x = 0; x<WINDOW_WIDTH * RENDER_SCALE; x++){
+    for (int x = renderStartX * RENDER_SCALE; x - (renderStartX*RENDER_SCALE) < renderWidth * RENDER_SCALE; x++){
         for (int y=0; y<WINDOW_HEIGHT * RENDER_SCALE; y++){
             if (stopFlag.load()){
                 cout << endl << "render thread closed prematurely" << endl;
                 return;
             }
             
-            int currentPixel = x*y + y;
+            int currentPixel = (x-renderStartX)*y + y;
 
             
             if (currentPixel % UPDATE_EVERY == 0)
@@ -219,7 +221,7 @@ void liveRenderGravityBasin(vector<StaticBody>& bodies){
                     lock_guard<std::mutex> lock(imageMutex);
                     
                     //update shared display image  
-                    sharedRenderImage.copy(renderBufferImage, 0, 0);
+                    sharedRenderImage.copy(renderBufferImage, renderStartX*RENDER_SCALE, 0);
 
                     // Flag that the image needs to be updated
                     updateRequired.store(true);
@@ -229,7 +231,7 @@ void liveRenderGravityBasin(vector<StaticBody>& bodies){
 
 
             StaticBody crashingBody = getCrashingBody(bodies, {(float)x/ RENDER_SCALE, (float)y/RENDER_SCALE}, 15000, 20);
-            renderBufferImage.setPixel(x, y, crashingBody.color);
+            renderBufferImage.setPixel(x-(renderStartX*RENDER_SCALE), y, crashingBody.color);
 
 
     }}
@@ -239,20 +241,19 @@ void liveRenderGravityBasin(vector<StaticBody>& bodies){
                     
 
         //update shared display image 
-        sharedRenderImage.copy(renderBufferImage, 0, 0);
+        sharedRenderImage.copy(renderBufferImage, renderStartX*RENDER_SCALE, 0);
 
          // Flag that the image needs to be updated
         updateRequired.store(true);
     }
-    if (SAVE_TO_FIZE)
-    renderBufferImage.saveToFile(SAVE_FILENAME);
-        
+
 }
 
+
 int main() {
-    vector<StaticBody> static_bodies = {StaticBody({400, 105}, 100, sf::Color(0, 201, 167)),
-                                        StaticBody({150, 300}, 100, sf::Color(189, 56, 178)),
-                                        StaticBody({60, 140}, 100, sf::Color(212, 55, 37))};
+    vector<StaticBody> static_bodies = {StaticBody({100, 400}, 100, sf::Color(0, 201, 167)),
+                                        StaticBody({400, 100}, 100, sf::Color(189, 56, 178)),
+                                        StaticBody({700, 400}, 100, sf::Color(212, 55, 37))};
 
 
 
@@ -287,8 +288,12 @@ int main() {
     gravityBasinsSprite.setTexture(sharedRenderTexture);
     gravityBasinsSprite.setScale(1.0f/RENDER_SCALE, 1.0f/RENDER_SCALE);
 
-    thread liveRenderThread(liveRenderGravityBasin, ref(static_bodies));
-    
+    int renderWidth = WINDOW_WIDTH/RENDER_THREADS;
+    vector<thread> renderThreads;
+    for(int i = 0; i < RENDER_THREADS; i++){
+        cout << "thread: "<< i<<" start: " << i*renderWidth<<" end: "<< (i+1) * renderWidth<<endl;
+        renderThreads.emplace_back(liveRenderGravityBasin, ref(static_bodies), i*renderWidth, renderWidth);
+    }
 
     // Simulate a render process
     while (window.isOpen()) {
@@ -370,11 +375,14 @@ int main() {
 
     }
     
-
-    if (liveRenderThread.joinable()) {
-        liveRenderThread.join();
-        stopFlag.store(false);
+    for(auto& thread:renderThreads)
+    {
+        if (thread.joinable()) {
+            thread.join();
+            
+        }
     }
+    stopFlag.store(false);
 
     return 0;
 }
