@@ -8,7 +8,8 @@
 #include <functional>
 #include <atomic>
 #include <mutex>
-
+#include <tracy/Tracy.hpp>
+#include <cstdint>  // For int32_t
 using namespace std;
 
 
@@ -16,7 +17,7 @@ using namespace std;
 #define STATIC_BODY_DENSITY 0.1
 #define WINDOW_WIDTH 500
 #define WINDOW_HEIGHT 500
-#define RENDER_SCALE 2.0f
+#define RENDER_SCALE 4.0f
 
 #define GRAVITY_CONSTANT 9.81
 
@@ -77,6 +78,23 @@ class StaticBody{
         }
 };
 
+
+float fastInvSqrt(float number) {
+    if (number <= 0) return 0;  // Handle non-positive input
+    float x = number;
+    float x_half = 0.5f * x;
+    int32_t i = *reinterpret_cast<int32_t*>(&x);
+    i = 0x5f3759df - (i >> 1);  // Initial approximation
+    x = *reinterpret_cast<float*>(&i);
+    x = x * (1.5f - (x_half * x * x));  // Refine approximation with Newton's method
+    return x;
+}
+
+float fastSqrt(float number) {
+    return 1.0f / fastInvSqrt(number);
+}
+
+
 float getDistanceSquared(const sf::Vector2f& point1, const sf::Vector2f& point2) {
     float dx = point2.x - point1.x;
     float dy = point2.y - point1.y;
@@ -84,7 +102,7 @@ float getDistanceSquared(const sf::Vector2f& point1, const sf::Vector2f& point2)
 }
 
 float getDistance(const sf::Vector2f& point1, const sf::Vector2f& point2) {
-    return sqrt(getDistanceSquared(point1, point2));
+    return fastSqrt(getDistanceSquared(point1, point2));
 }
 
 sf::Vector2f gravityForce(StaticBody body, sf::Vector2f pos){
@@ -98,6 +116,7 @@ sf::Vector2f gravityForce(StaticBody body, sf::Vector2f pos){
 
 sf::Vector2f netGravityForce(vector<StaticBody> bodies, sf::Vector2f pos){
     sf::Vector2f force = {0, 0};
+
 
     for(const auto& body:bodies){
         force += gravityForce(body, pos);
@@ -139,10 +158,10 @@ Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f start_pos,
 }
 
 StaticBody getCrashingBody(vector<StaticBody> bodies, sf::Vector2f start_pos, int maxSize = 15000, float stepSize = 1){
+
     sf::Vector2f pos = start_pos;
     sf::Vector2f vel = {0,0};
     for (int step = 0; step < maxSize; step++){
-
         if(colidesWithAny(bodies, pos))
 
             for(const auto& body: bodies){
@@ -200,7 +219,11 @@ sf::Texture createTrajectortTexture(Trajectory trajectory, float pointRadius = 1
 
 }
 
-void liveRenderGravityBasin(vector<StaticBody>& bodies, int renderStartX = 0, int renderWidth = WINDOW_WIDTH){
+void liveRenderGravityBasin(vector<StaticBody>& bodies, int threadID, int renderStartX = 0, int renderWidth = WINDOW_WIDTH){
+    
+    
+    tracy::SetThreadName(("renderThread" + to_string(threadID)).c_str());
+    ZoneScoped;
     sf::Image renderBufferImage;
     renderBufferImage.create(renderWidth * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE);
 
@@ -251,6 +274,9 @@ void liveRenderGravityBasin(vector<StaticBody>& bodies, int renderStartX = 0, in
 
 
 int main() {
+    tracy::SetThreadName("main"); 
+    
+
     vector<StaticBody> static_bodies = {StaticBody({100, 400}, 100, sf::Color(0, 201, 167)),
                                         StaticBody({400, 100}, 100, sf::Color(189, 56, 178)),
                                         StaticBody({700, 400}, 100, sf::Color(212, 55, 37))};
@@ -275,10 +301,6 @@ int main() {
     sf::Sprite bodiesSprite(bodiesTexture);
     bodiesSprite.setScale(1.0f/RENDER_SCALE,1.0f/RENDER_SCALE);
 
-    // Create a window
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Live Rendering");
-
-
     int traj_steps = 1;
 
     sharedRenderImage.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE, sf::Color::White);
@@ -292,11 +314,18 @@ int main() {
     vector<thread> renderThreads;
     for(int i = 0; i < RENDER_THREADS; i++){
         cout << "thread: "<< i<<" start: " << i*renderWidth<<" end: "<< (i+1) * renderWidth<<endl;
-        renderThreads.emplace_back(liveRenderGravityBasin, ref(static_bodies), i*renderWidth, renderWidth);
+        renderThreads.emplace_back(liveRenderGravityBasin, ref(static_bodies), i, i*renderWidth, renderWidth);
     }
+
+
+    // Create a window
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Live Rendering");
+    window.setFramerateLimit(60);
+
 
     // Simulate a render process
     while (window.isOpen()) {
+        FrameMark;
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed){// imagine forgeting to put parethesis here so every time you move mouse onto window the app closes and you have no idea why and you remove the stop flag and it starts working but doesntt make any sense untill one hour later you fucking notice....

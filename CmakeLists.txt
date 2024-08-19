@@ -1,44 +1,61 @@
+# Set minimum required CMake version
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+
+# Define the project and supported languages
 project(gravitybasins LANGUAGES CXX CUDA)
-
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3")
-endif()
-
-if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-  set(CMAKE_TOOLCHAIN_FILE "C:/Users/patry/VSCodeProjects/vcpkg/scripts/buildsystems/vcpkg.cmake"
-    CACHE STRING "Path to vcpkg toolchain file.")
-endif()
 
 # Set C++ and CUDA standard versions
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CUDA_STANDARD 14)
 
+#Mute the warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+if (MSVC)
+    add_compile_options(/wd4244)
+endif()
 
-# Find SFML package
+
+# Enable toolchain file for package management using vcpkg, if not defined
+if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "C:/Users/patry/VSCodeProjects/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      CACHE STRING "Path to vcpkg toolchain file.")
+endif()
+
+# Detect and set build flags based on the build type
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3")
+else() # For Debug or Profiling builds
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTRACY_ENABLE -O0 -g")
+  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -DTRACY_ENABLE -O0 -g")
+  option ( TRACY_ENABLE "" ON )
+  option ( TRACY_ON_DEMAND "" ON )
+endif()
+
+# Find SFML package with required components
 find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
-
-# Specify the source files
-set(SOURCES
-    src/main.cpp
-)
-
-# Add the executable target, which includes the C++ and CUDA source files
-add_executable(gravitybasins ${SOURCES})
 
 # Enable CUDA support
 find_package(CUDA REQUIRED)
 
-# Set compilation flags for CUDA
-set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-O3;-std=c++14")
+# Specify the source files
+set(SOURCES
+    src/main.cpp
+    # Add Tracy client source file
+    external/tracy/TracyClient.cpp
+
+)
+
+# Add the executable target with C++ and CUDA source files
+add_executable(gravitybasins ${SOURCES})
 
 # Link CUDA libraries to the executable
 target_link_libraries(gravitybasins ${CUDA_LIBRARIES})
 
-# Link SFML to the project
+# Link SFML libraries to the executable
 target_link_libraries(gravitybasins sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
-
 
 # Include directories for headers (optional)
 target_include_directories(gravitybasins PRIVATE include/)
+
+# Add Tracy include directory
+target_include_directories(gravitybasins PRIVATE external/tracy)
