@@ -1,0 +1,44 @@
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+project(gravitybasins LANGUAGES CXX CUDA)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+  set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3")
+endif()
+
+if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "C:/Users/patry/VSCodeProjects/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    CACHE STRING "Path to vcpkg toolchain file.")
+endif()
+
+# Set C++ and CUDA standard versions
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CUDA_STANDARD 14)
+
+
+# Find SFML package
+find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
+
+# Specify the source files
+set(SOURCES
+    src/main.cpp
+)
+
+# Add the executable target, which includes the C++ and CUDA source files
+add_executable(gravitybasins ${SOURCES})
+
+# Enable CUDA support
+find_package(CUDA REQUIRED)
+
+# Set compilation flags for CUDA
+set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};-O3;-std=c++14")
+
+# Link CUDA libraries to the executable
+target_link_libraries(gravitybasins ${CUDA_LIBRARIES})
+
+# Link SFML to the project
+target_link_libraries(gravitybasins sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+
+
+# Include directories for headers (optional)
+target_include_directories(gravitybasins PRIVATE include/)

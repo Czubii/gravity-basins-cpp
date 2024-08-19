@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Users/patry/VSCodeProjects/gravitybasins/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -external:IC:\\Users\\patry\\VSCodeProjects\\vcpkg\\installed\\x64-windows\\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc -O3 /MD /O2 /Ob2 /DNDEBUG -std:c++14 /FoCMakeFiles\\gravitybasins.dir\\src\\main.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\main.cpp",
+  "file": "C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\main.cpp",
+  "output": "CMakeFiles\\gravitybasins.dir\\src\\main.cpp.obj"
+}
+]
