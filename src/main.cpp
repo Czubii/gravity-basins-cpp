@@ -8,7 +8,6 @@
 #include <functional>
 #include <atomic>
 #include <mutex>
-#include <tracy/Tracy.hpp>
 #include <cstdint>  // For int32_t
 #include <random>
 using namespace std;
@@ -24,7 +23,7 @@ using namespace std;
 
 #define UPDATE_EVERY 3000
 
-#define RENDER_THREADS 12
+#define RENDER_THREADS 10
 
 #define SAVE_OUTPUT true//TODO
 #define OUTPUT_IMAGE_FILENAME "example.png"
@@ -254,7 +253,6 @@ vector<int> randomisedIntVector(const int size){
 
 void CPURenderThread(vector<StaticBody>& bodies, int threadID, std::vector<int>::iterator pixelIndicesStart, std::vector<int>::iterator pixelIndicesEnd){
     
-    tracy::SetThreadName(("renderThread" + to_string(threadID)).c_str());
     sf::Image renderBufferImage;
     renderBufferImage.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE, sf::Color(0, 0, 0, 0));
 
@@ -314,8 +312,6 @@ vector<thread> startMultithreadCPURenderer(vector<StaticBody>& staticBodies){
 }
 
 int main() {
-    tracy::SetThreadName("main"); 
-    
 
     vector<StaticBody> static_bodies = {StaticBody({100, 400}, 100, sf::Color(0, 201, 167)),
                                         StaticBody({400, 100}, 100, sf::Color(189, 56, 178)),
@@ -362,7 +358,6 @@ int main() {
 
     // Simulate a render process
     while (window.isOpen()) {
-        FrameMark;
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed){// imagine forgeting to put parethesis here so every time you move mouse onto window the app closes and you have no idea why and you remove the stop flag and it starts working but doesntt make any sense untill one hour later you fucking notice....
