@@ -18,7 +18,7 @@ using namespace std;
 #define STATIC_BODY_DENSITY 0.1
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 900
-#define RENDER_SCALE 4.0f
+#define RENDER_SCALE 1.5f
 
 #define GRAVITY_CONSTANT 9.81
 
@@ -29,8 +29,10 @@ using namespace std;
 #define SAVE_OUTPUT true//TODO
 #define OUTPUT_IMAGE_FILENAME "example.png"
 
+#define MUTE_STEP_LIMIT_INFO true
 
 float particle_mass = 100;
+
 
 
 atomic<bool> stopFlag(false);
@@ -135,13 +137,13 @@ bool colidesWithAny(vector<StaticBody> bodies, sf::Vector2f pos){
     return false;
 }
 
-Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f start_pos, int maxSize = 15000, 
+Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f startPos, int maxSize = 15000, 
                               float stepSize = 1, bool detectCollisions = true){
     Trajectory traj;
 
-    traj.points.push_back(start_pos);
+    traj.points.push_back(startPos);
 
-    sf::Vector2f pos = start_pos;
+    sf::Vector2f pos = startPos;
     sf::Vector2f vel = {0,0};
     for (int step = 0; step < maxSize; step++){
 
@@ -159,6 +161,12 @@ Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f start_pos,
     return traj;
 }
 
+Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2i startPos, int maxSize = 15000, 
+                              float stepSize = 1, bool detectCollisions = true){
+                                sf::Vector2f startPosF = {(float)startPos.x, (float)startPos.y};
+                                return generateTrajectory(bodies, startPosF, maxSize, stepSize, detectCollisions);
+                              }
+
 StaticBody getCrashingBody(vector<StaticBody> bodies, sf::Vector2f start_pos, int maxSize = 15000, float stepSize = 1){
 
     sf::Vector2f pos = start_pos;
@@ -175,6 +183,7 @@ StaticBody getCrashingBody(vector<StaticBody> bodies, sf::Vector2f start_pos, in
         pos += vel*stepSize;
     }
 
+    if(!MUTE_STEP_LIMIT_INFO)
     cout << "no crashes for point: (" << start_pos.x << ", " << start_pos.y << ") after " << maxSize << " steps" << endl;
 
     //return a new static body with black color for simplicty
@@ -202,14 +211,14 @@ sf::Texture createBodiesTexture(vector<StaticBody> bodies){
 sf::Texture createTrajectortTexture(Trajectory trajectory, float pointRadius = 1, sf::Color color = sf::Color::Red){
     // Create a RenderTexture to draw trajectory points
     sf::RenderTexture renderTexture;
-    renderTexture.create(WINDOW_WIDTH, WINDOW_HEIGHT); // Use the same size as the image
+    renderTexture.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE); // Use the same size as the image
     renderTexture.clear(sf::Color::Transparent); 
 
     for(const auto& point: trajectory.points)
     {
-        sf::CircleShape circle(pointRadius);
-        circle.setPosition(point);
-        circle.setOrigin(sf::Vector2f(pointRadius, pointRadius));
+        sf::CircleShape circle(pointRadius * RENDER_SCALE);
+        circle.setPosition(point * RENDER_SCALE);
+        circle.setOrigin(sf::Vector2f(pointRadius * RENDER_SCALE, pointRadius * RENDER_SCALE));
         circle.setFillColor(color);
 
         renderTexture.draw(circle);
@@ -316,11 +325,12 @@ int main() {
 
 
     //-----------   Creating test trajectory sprite    -----------
-    Trajectory testTrajectory = generateTrajectory(static_bodies, {100,100});
-    sf::Texture trajectoryTexture = createTrajectortTexture(testTrajectory);  
-
+    sf::Texture UserTrajectoryTexture;  
+    UserTrajectoryTexture.create(WINDOW_WIDTH*RENDER_SCALE, WINDOW_HEIGHT*RENDER_SCALE); // Use the same size as the image
+    UserTrajectoryTexture.setSmooth(true);
     // Create a sprite to display the image
-    sf::Sprite trajectorySprite(trajectoryTexture);
+    sf::Sprite userTrajectorySprite(UserTrajectoryTexture);
+    userTrajectorySprite.setScale(1.0f/RENDER_SCALE, 1.0f/RENDER_SCALE);
 
     //-----------   Creating bodies sprite   -----------
 
@@ -369,6 +379,34 @@ int main() {
                     traj_steps = 1;
                 }
             }
+            if(event.type == sf::Event::MouseButtonPressed){
+
+                sf::Vector2i mousePosWindow = sf::Mouse::getPosition(window);
+                sf::Vector2u windowSize = window.getSize();
+                bool isMouseInWindow =
+                    mousePosWindow.x >= 0 &&
+                    mousePosWindow.x <= static_cast<int>(windowSize.x) &&
+                    mousePosWindow.y >= 0 &&
+                    mousePosWindow.y <= static_cast<int>(windowSize.y);
+                
+                if(isMouseInWindow){
+                    if(event.mouseButton.button == sf::Mouse::Left)
+                    {
+                        Trajectory userTrajectory = generateTrajectory(static_bodies, mousePosWindow, 80000);
+                        UserTrajectoryTexture.update(createTrajectortTexture(userTrajectory, 1.0f, sf::Color::White));
+                    }
+                    else if(event.mouseButton.button == sf::Mouse::Right)// clear trajectories on RMB
+                    {
+                        // Create an image with the specified width and height
+                        sf::Image clearImage;
+                        clearImage.create(WINDOW_WIDTH*RENDER_SCALE, WINDOW_HEIGHT*RENDER_SCALE, sf::Color(0, 0, 0, 0)); // Fill the image with transparent color
+
+                        // Update the texture with the new image
+                        UserTrajectoryTexture.update(clearImage);
+                    }
+                }
+
+            }
         }
 
         // Update the texture if the image has been updated
@@ -391,6 +429,8 @@ int main() {
                     sf::Image outputImage(sharedRenderImage);
                     outputImage.copy(bodiesTexture.copyToImage(), 0, 0, sf::IntRect(0,0,0,0), true);
                     outputImage.saveToFile(OUTPUT_IMAGE_FILENAME);
+
+                    
                 }
                 chrono::duration<double> elapsed_seconds = chrono::high_resolution_clock::now() - renderStartTime;
                 cout << "Rendering finnished. Time elapsed: " << elapsed_seconds.count() << " seconds" << endl;
@@ -405,46 +445,15 @@ int main() {
         // Draw the image sprite
         window.draw(gravityBasinsSprite);
 
-    
-
-    
-
-
-
-/*
-
-        Trajectory testTrajectory = generateTrajectory(static_bodies, {200,100}, traj_steps);
-        sf::Texture trajectoryTexture = createTrajectortTexture(testTrajectory, 2);  
-
-        // Create a sprite to display the image
-        sf::Sprite trajectorySprite(trajectoryTexture);
-
-
-
-        Trajectory testTrajectory2 = generateTrajectory(static_bodies, {200,100}, traj_steps, 25);
-        sf::Texture trajectoryTexture2 = createTrajectortTexture(testTrajectory2, 1.5, sf::Color::Blue);  
-
-        // Create a sprite to display the image
-        sf::Sprite trajectorySprite2(trajectoryTexture2);
-
-
-
-        window.draw(trajectorySprite);
-        window.draw(trajectorySprite2);
-
-*/
-
-
 
 
 
 
         // Draw the circle sprite
         window.draw(bodiesSprite);
-        
+        // Display user-s trajectory
+        window.draw(userTrajectorySprite);
         window.display();
-
-        traj_steps ++;
 
     }
     
