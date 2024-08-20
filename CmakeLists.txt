@@ -55,6 +55,9 @@ target_link_libraries(gravitybasins PRIVATE "${SFML_LIB_DIR}/sfml-system.lib"
 # Include SFML headers
 target_include_directories(gravitybasins PRIVATE "${CMAKE_SOURCE_DIR}/external/SFML/include")
 
+# Add the include directory
+target_include_directories(gravitybasins PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
 # Enable CUDA compiler features
 set_property(TARGET gravitybasins PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 

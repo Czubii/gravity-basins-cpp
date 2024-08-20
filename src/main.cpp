@@ -10,6 +10,8 @@
 #include <mutex>
 #include <cstdint>  // For int32_t
 #include <random>
+#include "cuda_renderer.cuh"
+
 using namespace std;
 
 
@@ -312,7 +314,7 @@ vector<thread> startMultithreadCPURenderer(vector<StaticBody>& staticBodies){
 }
 
 int main() {
-
+    cr::test();
     vector<StaticBody> static_bodies = {StaticBody({100, 400}, 100, sf::Color(0, 201, 167)),
                                         StaticBody({400, 100}, 100, sf::Color(189, 56, 178)),
                                         StaticBody({700, 400}, 100, sf::Color(212, 55, 37)),
