@@ -27,7 +27,7 @@ using namespace std;
 #define RENDER_THREADS 12
 
 #define SAVE_OUTPUT true//TODO
-#define OUTPUT_IMAGE_FILENAME "test.png"
+#define OUTPUT_IMAGE_FILENAME "example.png"
 
 
 float particle_mass = 100;
@@ -387,11 +387,14 @@ int main() {
                         
                     }
                 }
-                if(SAVE_OUTPUT)
-                sharedRenderImage.saveToFile(OUTPUT_IMAGE_FILENAME);
+                if(SAVE_OUTPUT){
+                    sf::Image outputImage(sharedRenderImage);
+                    outputImage.copy(bodiesTexture.copyToImage(), 0, 0, sf::IntRect(0,0,0,0), true);
+                    outputImage.saveToFile(OUTPUT_IMAGE_FILENAME);
+                }
+                chrono::duration<double> elapsed_seconds = chrono::high_resolution_clock::now() - renderStartTime;
+                cout << "Rendering finnished. Time elapsed: " << elapsed_seconds.count() << " seconds" << endl;
             }
-            chrono::duration<double> elapsed_seconds = chrono::high_resolution_clock::now() - renderStartTime;
-            cout << "Rendering finnished. Time elapsed: " << elapsed_seconds.count() << " seconds" << endl;
         }
 
         window.clear(sf::Color(0,0,0));
