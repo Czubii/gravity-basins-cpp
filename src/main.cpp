@@ -342,7 +342,7 @@ int main() {
 
     vector<thread> renderThreads;
     renderThreads  = startMultithreadCPURenderer(static_bodies);
-
+    auto renderStartTime = chrono::high_resolution_clock::now();
 
 
     // Create a window
@@ -390,6 +390,8 @@ int main() {
                 if(SAVE_OUTPUT)
                 sharedRenderImage.saveToFile(OUTPUT_IMAGE_FILENAME);
             }
+            chrono::duration<double> elapsed_seconds = chrono::high_resolution_clock::now() - renderStartTime;
+            cout << "Rendering finnished. Time elapsed: " << elapsed_seconds.count() << " seconds" << endl;
         }
 
         window.clear(sf::Color(0,0,0));
