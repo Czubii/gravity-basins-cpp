@@ -1,4 +1,15 @@
 # ninja log v6
-3	701	7457896449340259	CMakeFiles/gravitybasins.dir/src/main.cpp.obj	20cfadd49e9017b8
-701	1675	7457896456323490	gravitybasins.exe	1b1556b14d801eb4
-13	229	7457895320632107	CMakeFiles/gravitybasins.dir/external/tracy/TracyClient.cpp.obj	26f582d8121643f4
+2	963	7458628097413812	CMakeFiles/gravitybasins.dir/src/main.cpp.obj	9d7ed0bb4dae3ec4
+1607	2546	7458628113459314	gravitybasins.exe	fa640d9d4860f294
+12	1607	7458628097513812	CMakeFiles/gravitybasins.dir/external/tracy/TracyClient.cpp.obj	171a98604ea8bf7c
+13	206	7458628795359730	CMakeFiles/gravitybasins.dir/external/tracy/TracyClient.cpp.obj	3b78fe0aed0c81c
+3	737	7458628795263110	CMakeFiles/gravitybasins.dir/src/main.cpp.obj	abff2f7daef5714f
+738	1587	7458628802605394	gravitybasins.exe	1b1556b14d801eb4
+3	767	7458632845200553	CMakeFiles/gravitybasins.dir/src/main.cpp.obj	abff2f7daef5714f
+768	1850	7458632852839062	gravitybasins.exe	1b1556b14d801eb4
+4	794	7458633205165439	CMakeFiles/gravitybasins.dir/src/main.cpp.obj	abff2f7daef5714f
+794	1646	7458633213063417	gravitybasins.exe	1b1556b14d801eb4
+3	753	7458633807678670	CMakeFiles/gravitybasins.dir/src/main.cpp.obj	abff2f7daef5714f
+754	1627	7458633815186380	gravitybasins.exe	1b1556b14d801eb4
+4	750	7458634432415371	CMakeFiles/gravitybasins.dir/src/main.cpp.obj	abff2f7daef5714f
+751	1610	7458634439882233	gravitybasins.exe	1b1556b14d801eb4

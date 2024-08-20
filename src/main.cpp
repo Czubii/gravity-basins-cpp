@@ -10,23 +10,24 @@
 #include <mutex>
 #include <tracy/Tracy.hpp>
 #include <cstdint>  // For int32_t
+#include <random>
 using namespace std;
 
 
 #define M_PI           3.14159265358979323846  /* pi */
 #define STATIC_BODY_DENSITY 0.1
-#define WINDOW_WIDTH 500
-#define WINDOW_HEIGHT 500
+#define WINDOW_WIDTH 900
+#define WINDOW_HEIGHT 900
 #define RENDER_SCALE 4.0f
 
 #define GRAVITY_CONSTANT 9.81
 
-#define UPDATE_EVERY 30000
+#define UPDATE_EVERY 3000
 
 #define RENDER_THREADS 12
 
-#define SAVE_TO_FIZE true//TODO
-#define SAVE_FILENAME "test.png"
+#define SAVE_OUTPUT true//TODO
+#define OUTPUT_IMAGE_FILENAME "test.png"
 
 
 float particle_mass = 100;
@@ -37,8 +38,9 @@ atomic<bool> stopFlag(false);
 sf::Image sharedRenderImage;
 sf::Texture sharedRenderTexture;
 sf::Sprite gravityBasinsSprite;
-std::atomic<bool> updateRequired(false);
-std::mutex imageMutex;
+atomic<bool> updateRequired(false);
+mutex imageMutex;
+atomic<int> finishedThreads(0);
 
 struct Trajectory
 {
@@ -218,60 +220,89 @@ sf::Texture createTrajectortTexture(Trajectory trajectory, float pointRadius = 1
     return renderTexture.getTexture();
 
 }
+vector<int> randomisedIntVector(const int size){
+    vector<int> output;
+    for(int i =0; i<size; i++)
+    output.push_back(i);
 
-void liveRenderGravityBasin(vector<StaticBody>& bodies, int threadID, int renderStartX = 0, int renderWidth = WINDOW_WIDTH){
-    
+    // Create a random number generator
+    std::random_device rd; // Obtain a random number from hardware
+    std::mt19937 eng(rd()); // Seed the generator
+
+    // Define the range for random numbers
+    std::uniform_int_distribution<> distr(0, size); // Range [1, 100]
+
+    for(int i =0; i<size; i++)
+    {
+        // Generate and a random number
+        int random_number = distr(eng);
+        swap(output[i], output[random_number]);
+    }
+
+    return output;
+
+}
+
+void CPURenderThread(vector<StaticBody>& bodies, int threadID, std::vector<int>::iterator pixelIndicesStart, std::vector<int>::iterator pixelIndicesEnd){
     
     tracy::SetThreadName(("renderThread" + to_string(threadID)).c_str());
-    ZoneScoped;
     sf::Image renderBufferImage;
-    renderBufferImage.create(renderWidth * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE);
+    renderBufferImage.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE, sf::Color(0, 0, 0, 0));
 
-    for (int x = renderStartX * RENDER_SCALE; x - (renderStartX*RENDER_SCALE) < renderWidth * RENDER_SCALE; x++){
-        for (int y=0; y<WINDOW_HEIGHT * RENDER_SCALE; y++){
+    int currentPixel = 0;
+    for (auto PixelIndexIt = pixelIndicesStart; PixelIndexIt != pixelIndicesEnd; ++PixelIndexIt){
             if (stopFlag.load()){
                 cout << endl << "render thread closed prematurely" << endl;
                 return;
             }
             
-            int currentPixel = (x-renderStartX)*y + y;
-
-            
             if (currentPixel % UPDATE_EVERY == 0)
             {
                 // Lock the mutex to safely update the image
-                {
-                    lock_guard<std::mutex> lock(imageMutex);
+                
+                lock_guard<std::mutex> lock(imageMutex);
                     
                     //update shared display image  
-                    sharedRenderImage.copy(renderBufferImage, renderStartX*RENDER_SCALE, 0);
+                sharedRenderImage.copy(renderBufferImage, 0, 0, sf::IntRect(0,0,0,0), true);
 
                     // Flag that the image needs to be updated
-                    updateRequired.store(true);
-                }
+                updateRequired.store(true);
+                
             }
 
-
+            int y = *PixelIndexIt / (int)(WINDOW_WIDTH * RENDER_SCALE);
+            int x = *PixelIndexIt % (int)(WINDOW_WIDTH * RENDER_SCALE);
 
             StaticBody crashingBody = getCrashingBody(bodies, {(float)x/ RENDER_SCALE, (float)y/RENDER_SCALE}, 15000, 20);
-            renderBufferImage.setPixel(x-(renderStartX*RENDER_SCALE), y, crashingBody.color);
+            renderBufferImage.setPixel(x, y, crashingBody.color);
 
-
-    }}
+            currentPixel ++;
+    }
     // Lock the mutex to safely update the image
     {
+            // Lock the mutex to safely update the image        
         lock_guard<std::mutex> lock(imageMutex);
                     
+            //update shared display image  
+        sharedRenderImage.copy(renderBufferImage, 0, 0, sf::IntRect(0,0,0,0), true);
 
-        //update shared display image 
-        sharedRenderImage.copy(renderBufferImage, renderStartX*RENDER_SCALE, 0);
-
-         // Flag that the image needs to be updated
+        finishedThreads++;
+        // Flag that the image needs to be updated
         updateRequired.store(true);
     }
 
 }
+vector<thread> startMultithreadCPURenderer(vector<StaticBody>& staticBodies){
+    int pixelsPerThread = (WINDOW_HEIGHT*WINDOW_WIDTH*RENDER_SCALE*RENDER_SCALE)/RENDER_THREADS;
+    vector<thread> renderThreads;
+    static vector<int> randomisedIndices = randomisedIntVector(WINDOW_HEIGHT*WINDOW_WIDTH*RENDER_SCALE*RENDER_SCALE);
+    for(int i = 0; i < RENDER_THREADS; i++){
+        vector<int>::iterator start = randomisedIndices.begin() + i*pixelsPerThread;
+        renderThreads.emplace_back(CPURenderThread, ref(staticBodies), i, start, start+pixelsPerThread);
+    }
 
+    return renderThreads;
+}
 
 int main() {
     tracy::SetThreadName("main"); 
@@ -279,8 +310,8 @@ int main() {
 
     vector<StaticBody> static_bodies = {StaticBody({100, 400}, 100, sf::Color(0, 201, 167)),
                                         StaticBody({400, 100}, 100, sf::Color(189, 56, 178)),
-                                        StaticBody({700, 400}, 100, sf::Color(212, 55, 37))};
-
+                                        StaticBody({700, 400}, 100, sf::Color(212, 55, 37)),
+                                        StaticBody({600, 650}, 100, sf::Color(212, 172, 91))};
 
 
 
@@ -291,7 +322,6 @@ int main() {
     // Create a sprite to display the image
     sf::Sprite trajectorySprite(trajectoryTexture);
 
-
     //-----------   Creating bodies sprite   -----------
 
     //create and keep in memora a variable for texture so it fucking works after 1000000hours debuging
@@ -300,22 +330,19 @@ int main() {
     // Create a Sprite to display the bodies
     sf::Sprite bodiesSprite(bodiesTexture);
     bodiesSprite.setScale(1.0f/RENDER_SCALE,1.0f/RENDER_SCALE);
-
     int traj_steps = 1;
 
-    sharedRenderImage.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE, sf::Color::White);
+    sharedRenderImage.create(WINDOW_WIDTH * RENDER_SCALE, WINDOW_HEIGHT * RENDER_SCALE, sf::Color::Black);
     sharedRenderTexture.loadFromImage(sharedRenderImage);
     sharedRenderTexture.setSmooth(true);
 
     gravityBasinsSprite.setTexture(sharedRenderTexture);
     gravityBasinsSprite.setScale(1.0f/RENDER_SCALE, 1.0f/RENDER_SCALE);
 
-    int renderWidth = WINDOW_WIDTH/RENDER_THREADS;
+
     vector<thread> renderThreads;
-    for(int i = 0; i < RENDER_THREADS; i++){
-        cout << "thread: "<< i<<" start: " << i*renderWidth<<" end: "<< (i+1) * renderWidth<<endl;
-        renderThreads.emplace_back(liveRenderGravityBasin, ref(static_bodies), i, i*renderWidth, renderWidth);
-    }
+    renderThreads  = startMultithreadCPURenderer(static_bodies);
+
 
 
     // Create a window
@@ -350,10 +377,22 @@ int main() {
             std::lock_guard<std::mutex> lock(imageMutex);
             sharedRenderTexture.update(sharedRenderImage); 
             updateRequired.store(false);
-            
+
+            //chcek if all threads finished, join them, and save output image
+            if (finishedThreads == RENDER_THREADS){
+                for(auto& thread:renderThreads)
+                {
+                    if (thread.joinable()) {
+                        thread.join();
+                        
+                    }
+                }
+                if(SAVE_OUTPUT)
+                sharedRenderImage.saveToFile(OUTPUT_IMAGE_FILENAME);
+            }
         }
 
-        window.clear();
+        window.clear(sf::Color(0,0,0));
     
 
 
@@ -363,7 +402,7 @@ int main() {
 
     
 
-
+    
 
 
 
