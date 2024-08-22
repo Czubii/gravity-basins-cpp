@@ -15,9 +15,9 @@
 
 #define RENDER_THREADS 10
 
-#define PARTICLE_MASS 20.0f
+#define PARTICLE_MASS 200.0f // the higher the mass the better the accuaracy
 
-#define SAVE_OUTPUT true//TODO: again this is not implemented due to project restructurization :)
+#define SAVE_OUTPUT true
 #define OUTPUT_IMAGE_FILENAME "example.png"
 
 #define MUTE_STEP_LIMIT_INFO true

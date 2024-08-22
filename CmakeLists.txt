@@ -4,7 +4,7 @@ project(gravitybasins LANGUAGES CXX CUDA)
 # Set CUDA properties
 set(CMAKE_CUDA_STANDARD 11)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_ARCHITECTURES "60")  # Adjust this to your GPU architecture
+set(CMAKE_CUDA_ARCHITECTURES "89")  # Adjust this to your GPU architecture
 
 # Specify source files
 file(GLOB CUDA_SOURCES "src/*.cu")

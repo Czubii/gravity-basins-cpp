@@ -64,7 +64,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /MD /O2 /Ob2 /DNDEBUG -MD"
+					"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -MD"
 				}
 			],
 			"includes" : 
@@ -95,7 +95,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-D_WINDOWS -Xcompiler=\" /GR /EHsc\" -Xcompiler=\"-O2 -Ob2\" -DNDEBUG \"--generate-code=arch=compute_60,code=[compute_60,sm_60]\" -Xcompiler=-MD"
+					"fragment" : "-D_WINDOWS -Xcompiler=\" /GR /EHsc\" -Xcompiler=\" -Zi -O2 -Ob1\" -DNDEBUG \"--generate-code=arch=compute_89,code=[compute_89,sm_89]\" -Xcompiler=-MD"
 				}
 			],
 			"includes" : 
@@ -134,11 +134,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /MD /O2 /Ob2 /DNDEBUG -MD",
+				"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -MD",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /INCREMENTAL:NO /subsystem:console",
+				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console",
 				"role" : "flags"
 			},
 			{

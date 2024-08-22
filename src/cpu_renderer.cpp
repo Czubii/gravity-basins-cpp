@@ -46,8 +46,9 @@ CpuBasinsRenderer::CpuBasinsRenderer(int _outputWidth, int _outputHeight, std::v
       threadsRunning(0),
       rendering(false) {
     sharedRenderImage.create(outputWidth, outputHeight, sf::Color::Black);
-    outputTexture.setSmooth(true);
+    
     outputTexture.loadFromImage(sharedRenderImage);
+    outputTexture.setSmooth(true);
 }
 
 sf::Texture& CpuBasinsRenderer::getTexture(){
@@ -77,7 +78,7 @@ sf::Texture& CpuBasinsRenderer::getTexture(){
             }
             
             if(updateThreshold !=0)
-            {if(currentPixel % UPDATE_EVERY == 0)
+            {if(currentPixel % updateThreshold == 0)
             {
                 // Lock the mutex to safely update the image 
                 lock_guard<std::mutex> lock(imageUpdateMutex);

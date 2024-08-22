@@ -7,7 +7,7 @@
 
 # =============================================================================
 # Project: gravitybasins
-# Configurations: Release
+# Configurations: RelWithDebInfo
 # =============================================================================
 # =============================================================================
 
@@ -20,7 +20,7 @@ msvc_deps_prefix = Note: including file:
 #############################################
 # Rule for compiling CUDA files.
 
-rule CUDA_COMPILER__gravitybasins_unscanned_Release
+rule CUDA_COMPILER__gravitybasins_unscanned_RelWithDebInfo
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~1\NVIDIA~2\CUDA\v12.6\bin\nvcc.exe -forward-unknown-to-host-compiler $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -x cu -rdc=true -c $in -o $out -Xcompiler=-Fd$TARGET_COMPILE_PDB,-FS
@@ -30,7 +30,7 @@ rule CUDA_COMPILER__gravitybasins_unscanned_Release
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__gravitybasins_unscanned_Release
+rule CXX_COMPILER__gravitybasins_unscanned_RelWithDebInfo
   deps = msvc
   command = ${LAUNCHER}${CODE_CHECK}C:\PROGRA~2\MICROS~2\2022\BUILDT~1\VC\Tools\MSVC\1441~1.341\bin\Hostx64\x64\cl.exe  /nologo /TP $DEFINES $INCLUDES $FLAGS /showIncludes /Fo$out /Fd$TARGET_COMPILE_PDB /FS -c $in
   description = Building CXX object $out
@@ -39,7 +39,7 @@ rule CXX_COMPILER__gravitybasins_unscanned_Release
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_DEVICE_LINKER__gravitybasins_Release
+rule CXX_EXECUTABLE_DEVICE_LINKER__gravitybasins_RelWithDebInfo
   command = C:\PROGRA~1\NVIDIA~2\CUDA\v12.6\bin\nvcc.exe -forward-unknown-to-host-compiler $LANGUAGE_COMPILE_FLAGS $LINK_FLAGS -Wno-deprecated-gpu-targets -shared -dlink $in -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES -Xcompiler=-Fd$TARGET_COMPILE_PDB,-FS
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT
@@ -48,7 +48,7 @@ rule CXX_EXECUTABLE_DEVICE_LINKER__gravitybasins_Release
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_LINKER__gravitybasins_Release
+rule CXX_EXECUTABLE_LINKER__gravitybasins_RelWithDebInfo
   command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && "C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=$OBJECT_DIR --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x64\mt.exe --manifests $MANIFESTS -- C:\PROGRA~2\MICROS~2\2022\BUILDT~1\VC\Tools\MSVC\1441~1.341\bin\Hostx64\x64\link.exe /nologo $in  /out:$TARGET_FILE /implib:$TARGET_IMPLIB /pdb:$TARGET_PDB /version:0.0 $LINK_FLAGS $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT

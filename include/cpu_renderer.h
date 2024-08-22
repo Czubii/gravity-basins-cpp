@@ -26,6 +26,7 @@ private:
     std::mutex imageUpdateMutex;
     sf::Texture outputTexture; 
 
+    /// @brief waits for all render threads to join, cleans up the memory
     void cleanUpRenderThreads();
     void RenderThread(std::vector<StaticBody>& bodies, int threadID, std::vector<int>::iterator pixelIndicesStart, std::vector<int>::iterator pixelIndicesEnd, int updateThreshold);
 
