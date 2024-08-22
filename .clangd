@@ -4,3 +4,14 @@ CompileFlags:
     - --cuda-gpu-arch=sm_89
     - -LC://Program Files//NVIDIA GPU Computing Toolkit//CUDA//v12.6//lib
     - -IC://Program Files//NVIDIA GPU Computing Toolkit//CUDA//v12.6//include
+    - -std=c++17
+    - -x
+    - cuda
+  Remove:
+    - -forward-unknown-to-host-compiler
+    - '-Xcompiler= /GR /EHsc'
+    - '-Xcompiler= -Zi -O2 -Ob1'
+    - '--generate-code=arch=compute_89,code=[compute_89,sm_89]'
+    - '-Xcompiler=-MD'
+    - -rdc=true
+    - '-Xcompiler=-FdCMakeFiles\gravitybasins.dir\,-FS'

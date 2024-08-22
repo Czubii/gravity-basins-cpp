@@ -1,8 +1,0 @@
-# ninja log v6
-23	129	7460499835833131	CMakeFiles/gravitybasins.dir/src/cuda_renderer.cpp.obj	a8f522f5e8df38ba
-2	855	7460499835619091	CMakeFiles/gravitybasins.dir/src/bodies.cpp.obj	de6d33097583d93e
-3252	4880	7460499868119298	CMakeFiles/gravitybasins.dir/cmake_device_link.obj	7ec22eae6db7ffa9
-33	893	7460499835937433	CMakeFiles/gravitybasins.dir/src/main.cpp.obj	4f27a6b06a229dd1
-4881	5276	7460499884409984	gravitybasins.exe	736d9077539f3957
-13	1015	7460499835726978	CMakeFiles/gravitybasins.dir/src/cpu_renderer.cpp.obj	e04adc1c677cb4b7
-44	3250	7460499836037416	CMakeFiles/gravitybasins.dir/src/kernels.cu.obj	2e7e51fb72ce038

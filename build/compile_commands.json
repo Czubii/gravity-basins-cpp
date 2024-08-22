@@ -1,31 +1,31 @@
 [
 {
   "directory": "C:/Users/patry/VSCodeProjects/gravitybasins/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include /DWIN32 /D_WINDOWS /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -MD /FoCMakeFiles\\gravitybasins.dir\\src\\bodies.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\bodies.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include /DWIN32 /D_WINDOWS /GR /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD /MD /FoCMakeFiles\\gravitybasins.dir\\src\\bodies.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\bodies.cpp",
   "file": "C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\bodies.cpp",
   "output": "CMakeFiles\\gravitybasins.dir\\src\\bodies.cpp.obj"
 },
 {
   "directory": "C:/Users/patry/VSCodeProjects/gravitybasins/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include /DWIN32 /D_WINDOWS /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -MD /FoCMakeFiles\\gravitybasins.dir\\src\\cpu_renderer.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\cpu_renderer.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include /DWIN32 /D_WINDOWS /GR /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD /MD /FoCMakeFiles\\gravitybasins.dir\\src\\cpu_renderer.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\cpu_renderer.cpp",
   "file": "C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\cpu_renderer.cpp",
   "output": "CMakeFiles\\gravitybasins.dir\\src\\cpu_renderer.cpp.obj"
 },
 {
   "directory": "C:/Users/patry/VSCodeProjects/gravitybasins/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include /DWIN32 /D_WINDOWS /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -MD /FoCMakeFiles\\gravitybasins.dir\\src\\cuda_renderer.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\cuda_renderer.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include /DWIN32 /D_WINDOWS /GR /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD /MD /FoCMakeFiles\\gravitybasins.dir\\src\\cuda_renderer.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\cuda_renderer.cpp",
   "file": "C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\cuda_renderer.cpp",
   "output": "CMakeFiles\\gravitybasins.dir\\src\\cuda_renderer.cpp.obj"
 },
 {
   "directory": "C:/Users/patry/VSCodeProjects/gravitybasins/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include /DWIN32 /D_WINDOWS /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -MD /FoCMakeFiles\\gravitybasins.dir\\src\\main.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\main.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include /DWIN32 /D_WINDOWS /GR /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD /MD /FoCMakeFiles\\gravitybasins.dir\\src\\main.cpp.obj /FdCMakeFiles\\gravitybasins.dir\\ /FS -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\main.cpp",
   "file": "C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\main.cpp",
   "output": "CMakeFiles\\gravitybasins.dir\\src\\main.cpp.obj"
 },
 {
   "directory": "C:/Users/patry/VSCodeProjects/gravitybasins/build",
-  "command": "C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v12.6\\bin\\nvcc.exe -forward-unknown-to-host-compiler -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include -D_WINDOWS -Xcompiler=\" /GR /EHsc\" -Xcompiler=\" -Zi -O2 -Ob1\" -DNDEBUG \"--generate-code=arch=compute_89,code=[compute_89,sm_89]\" -Xcompiler=-MD -x cu -rdc=true -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\kernels.cu -o CMakeFiles\\gravitybasins.dir\\src\\kernels.cu.obj -Xcompiler=-FdCMakeFiles\\gravitybasins.dir\\,-FS",
+  "command": "C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v12.6\\bin\\nvcc.exe -forward-unknown-to-host-compiler -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\include -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src -IC:\\Users\\patry\\VSCodeProjects\\gravitybasins\\external\\SFML\\include -D_WINDOWS -Xcompiler=\" /GR /EHsc\" -Xcompiler=\" -Zi -O2 -Ob1\" -DNDEBUG \"--generate-code=arch=compute_89,code=[compute_89,sm_89]\" -Xcompiler=-MD /MD -rdc=true -x cu -rdc=true -c C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\kernels.cu -o CMakeFiles\\gravitybasins.dir\\src\\kernels.cu.obj -Xcompiler=-FdCMakeFiles\\gravitybasins.dir\\,-FS",
   "file": "C:\\Users\\patry\\VSCodeProjects\\gravitybasins\\src\\kernels.cu",
   "output": "CMakeFiles\\gravitybasins.dir\\src\\kernels.cu.obj"
 }

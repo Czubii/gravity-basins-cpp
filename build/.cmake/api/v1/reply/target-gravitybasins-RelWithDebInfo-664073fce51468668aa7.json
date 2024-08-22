@@ -15,6 +15,7 @@
 		[
 			"add_executable",
 			"target_link_libraries",
+			"target_compile_options",
 			"target_include_directories"
 		],
 		"files" : 
@@ -35,25 +36,37 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 46,
+				"line" : 44,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 49,
+				"line" : 47,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 43,
+				"line" : 61,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 56,
+				"line" : 65,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 41,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
 				"parent" : 0
 			}
 		]
@@ -64,21 +77,25 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -MD"
+					"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "/MD"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 4,
+					"backtrace" : 6,
 					"path" : "C:/Users/patry/VSCodeProjects/gravitybasins/include"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 6,
 					"path" : "C:/Users/patry/VSCodeProjects/gravitybasins/src"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 7,
 					"path" : "C:/Users/patry/VSCodeProjects/gravitybasins/external/SFML/include"
 				}
 			],
@@ -96,20 +113,28 @@
 			[
 				{
 					"fragment" : "-D_WINDOWS -Xcompiler=\" /GR /EHsc\" -Xcompiler=\" -Zi -O2 -Ob1\" -DNDEBUG \"--generate-code=arch=compute_89,code=[compute_89,sm_89]\" -Xcompiler=-MD"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "/MD"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-rdc=true"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 4,
+					"backtrace" : 6,
 					"path" : "C:/Users/patry/VSCodeProjects/gravitybasins/include"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 6,
 					"path" : "C:/Users/patry/VSCodeProjects/gravitybasins/src"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 7,
 					"path" : "C:/Users/patry/VSCodeProjects/gravitybasins/external/SFML/include"
 				}
 			],
@@ -134,7 +159,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -MD",
+				"fragment" : "/DWIN32 /D_WINDOWS /GR /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD",
 				"role" : "flags"
 			},
 			{
