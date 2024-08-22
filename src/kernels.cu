@@ -1,12 +1,12 @@
 #include <iostream>
 #include <cuda_runtime.h>
+#include "kernels.cuh"
 
 using namespace std;
 
-namespace cr{
+namespace kernel{
 
-
-const int ARRAY_SIZE = 10;
+const int ARRAY_SIZE = 1000;
 const int ARRAY_BYTES = ARRAY_SIZE * sizeof(float);
 
 // Kernel function to add elements of two arrays

@@ -75,7 +75,9 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "fstream": "cpp",
+        "set": "cpp"
     },
     "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
