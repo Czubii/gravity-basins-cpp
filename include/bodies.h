@@ -44,11 +44,11 @@ bool colidesWithAny(vector<StaticBody> bodies, sf::Vector2f pos);
 
 
 
-Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f startPos, int maxSize, 
-                              float stepSize, bool detectCollisions);
+Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f startPos, int maxSize = 15000, 
+                              float stepSize = 1, bool detectCollisions = true);
 
-Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2i startPos, int maxSize, 
-                              float stepSize, bool detectCollisions);
+Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2i startPos, int maxSize = 15000, 
+                              float stepSize = 1, bool detectCollisions = true);
 
 StaticBody getCrashingBody(vector<StaticBody> bodies, sf::Vector2f start_pos, int maxSize, float stepSize);
 

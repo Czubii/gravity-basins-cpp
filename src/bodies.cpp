@@ -96,8 +96,8 @@ bool colidesWithAny(vector<StaticBody> bodies, sf::Vector2f pos){
 
 
 
-Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f startPos, int maxSize = 15000, 
-                              float stepSize = 1, bool detectCollisions = true){
+Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f startPos, int maxSize, 
+                              float stepSize, bool detectCollisions){
     Trajectory traj;
 
     traj.points.push_back(startPos);
@@ -117,11 +117,13 @@ Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2f startPos, 
         traj.points.push_back(pos);
     }
 
+    cout << "hmm";
+
     return traj;
 }
 
-Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2i startPos, int maxSize = 15000, 
-                              float stepSize = 1, bool detectCollisions = true){
+Trajectory generateTrajectory(vector<StaticBody> bodies, sf::Vector2i startPos, int maxSize, 
+                              float stepSize, bool detectCollisions){
                                 sf::Vector2f startPosF = {(float)startPos.x, (float)startPos.y};
                                 return generateTrajectory(bodies, startPosF, maxSize, stepSize, detectCollisions);
                               }

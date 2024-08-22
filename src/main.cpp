@@ -280,12 +280,12 @@ int main() {
 
 
     //-----------   Creating test trajectory sprite    -----------
-    // sf::Texture UserTrajectoryTexture;  
-    // UserTrajectoryTexture.create(WINDOW_WIDTH*RENDER_SCALE, WINDOW_HEIGHT*RENDER_SCALE); // Use the same size as the image
-    // UserTrajectoryTexture.setSmooth(true);
-    // // Create a sprite to display the image
-    // sf::Sprite userTrajectorySprite(UserTrajectoryTexture);
-    // userTrajectorySprite.setScale(1.0f/RENDER_SCALE, 1.0f/RENDER_SCALE); //TODO:bring this back with the Trajctory class later
+    sf::Texture UserTrajectoryTexture;  
+    UserTrajectoryTexture.create(WINDOW_WIDTH*RENDER_SCALE, WINDOW_HEIGHT*RENDER_SCALE); // Use the same size as the image
+    UserTrajectoryTexture.setSmooth(true);
+    // Create a sprite to display the image
+    sf::Sprite userTrajectorySprite(UserTrajectoryTexture);
+    userTrajectorySprite.setScale(1.0f/RENDER_SCALE, 1.0f/RENDER_SCALE); //TODO:bring this back with the Trajctory class later
 
     //-----------   Creating bodies sprite   -----------
 
@@ -336,30 +336,30 @@ int main() {
             }
             if(event.type == sf::Event::MouseButtonPressed){
 
-                // sf::Vector2i mousePosWindow = sf::Mouse::getPosition(window);
-                // sf::Vector2u windowSize = window.getSize();
-                // bool isMouseInWindow =
-                //     mousePosWindow.x >= 0 &&
-                //     mousePosWindow.x <= static_cast<int>(windowSize.x) &&
-                //     mousePosWindow.y >= 0 &&
-                //     mousePosWindow.y <= static_cast<int>(windowSize.y);
+                sf::Vector2i mousePosWindow = sf::Mouse::getPosition(window);
+                sf::Vector2u windowSize = window.getSize();
+                bool isMouseInWindow =
+                    mousePosWindow.x >= 0 &&
+                    mousePosWindow.x <= static_cast<int>(windowSize.x) &&
+                    mousePosWindow.y >= 0 &&
+                    mousePosWindow.y <= static_cast<int>(windowSize.y);
                 
-                // if(isMouseInWindow){
-                //     if(event.mouseButton.button == sf::Mouse::Left)
-                //     {
-                //         Trajectory userTrajectory = generateTrajectory(static_bodies, mousePosWindow, 80000);
-                //         UserTrajectoryTexture.update(createTrajectortTexture(userTrajectory, 1.0f, sf::Color::White));
-                //     }
-                //     else if(event.mouseButton.button == sf::Mouse::Right)// clear trajectories on RMB
-                //     {
-                //         // Create an image with the specified width and height
-                //         sf::Image clearImage;
-                //         clearImage.create(WINDOW_WIDTH*RENDER_SCALE, WINDOW_HEIGHT*RENDER_SCALE, sf::Color(0, 0, 0, 0)); // Fill the image with transparent color
+                if(isMouseInWindow){
+                    if(event.mouseButton.button == sf::Mouse::Left)
+                    {
+                        Trajectory userTrajectory = generateTrajectory(static_bodies, mousePosWindow, 80000);
+                        UserTrajectoryTexture.update(createTrajectortTexture(userTrajectory, 1.0f, sf::Color::White));
+                    }
+                    else if(event.mouseButton.button == sf::Mouse::Right)// clear trajectories on RMB
+                    {
+                        // Create an image with the specified width and height
+                        sf::Image clearImage;
+                        clearImage.create(WINDOW_WIDTH*RENDER_SCALE, WINDOW_HEIGHT*RENDER_SCALE, sf::Color(0, 0, 0, 0)); // Fill the image with transparent color
 
-                //         // Update the texture with the new image
-                //         UserTrajectoryTexture.update(clearImage);
-                //     }
-                // }
+                        // Update the texture with the new image
+                        UserTrajectoryTexture.update(clearImage);
+                    }
+                }
 
             }
         }
@@ -409,7 +409,7 @@ int main() {
         // Draw the circle sprite
         window.draw(bodiesSprite);
         // Display user-s trajectory
-        // window.draw(userTrajectorySprite);
+        window.draw(userTrajectorySprite);
         window.display();
 
     }

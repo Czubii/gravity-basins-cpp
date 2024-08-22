@@ -7,7 +7,7 @@
 #define STATIC_BODY_DENSITY 0.1
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 900
-#define RENDER_SCALE 1.5f
+#define RENDER_SCALE 4.0f
 
 #define GRAVITY_CONSTANT 9.81
 
@@ -15,7 +15,7 @@
 
 #define RENDER_THREADS 10
 
-#define PARTICLE_MASS 0.1f
+#define PARTICLE_MASS 20.0f
 
 #define SAVE_OUTPUT true//TODO: again this is not implemented due to project restructurization :)
 #define OUTPUT_IMAGE_FILENAME "example.png"
