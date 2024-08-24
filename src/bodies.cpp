@@ -10,13 +10,11 @@ using namespace std;
 //TODO: make this file not be a total mess
 
 
-
         StaticBody::StaticBody(sf::Vector2f _pos, float _mass, sf::Color _color)
         : pos(_pos),
           mass(_mass),
           color(_color)
         {
-
             radius = (int)sqrt(mass/(M_PI*STATIC_BODY_DENSITY));
 
         }
@@ -68,7 +66,7 @@ sf::Vector2f gravityForce(StaticBody body, sf::Vector2f pos){
     float distanceSquared = getDistanceSquared(body.pos, pos);
 
     sf::Vector2f direction = (body.pos - pos)/sqrt(distanceSquared);
-    float magnitude = GRAVITY_CONSTANT * body.mass / distanceSquared;
+    float magnitude = GRAVITY_CONSTANT * PARTICLE_MASS * body.mass / distanceSquared;
 
     return direction * magnitude;
 }

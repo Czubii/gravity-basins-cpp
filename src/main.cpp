@@ -1,15 +1,63 @@
+#include <setjmp.h>
 #include <vector>
+#include <iostream>
 #include <SFML/Graphics.hpp>
+#include "SFML/Graphics/Sprite.hpp"
 #include "bodies.h"
-#include "kernels.cuh"
 #include "parameters.h"
 #include "cpu_renderer.h"
+#include "cuda_renderer.h"
 
 using namespace std;
 
-int main() {
+void cudaDebug(){
 
-    kernel::test();
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Live Rendering");
+    window.setFramerateLimit(60);
+
+
+     vector<StaticBody> static_bodies = {StaticBody({100, 400}, 100, sf::Color(0, 201, 167)),
+                                        StaticBody({400, 100}, 100, sf::Color(189, 56, 178)),
+                                        StaticBody({700, 400}, 100, sf::Color(212, 55, 37)),
+                                        StaticBody({600, 650}, 100, sf::Color(212, 172, 91))};
+    CUDABasinsRenderer CUDARenderer((int)(WINDOW_WIDTH), (int)(WINDOW_WIDTH), static_bodies, (RENDER_SCALE));
+
+    sf::Sprite testSprite(CUDARenderer.getTexture());
+    testSprite.setScale(1.0f/(RENDER_SCALE), 1.0f/(RENDER_SCALE));
+    sf::Texture bodiesTexture = createBodiesTexture(static_bodies);
+    bodiesTexture.setSmooth(true);
+    // Create a Sprite to display the bodies
+    sf::Sprite bodiesSprite(bodiesTexture);
+    bodiesSprite.setScale(1.0f/(RENDER_SCALE),1.0f/(RENDER_SCALE));
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed){// imagine forgeting to put parethesis here so every time you move mouse onto window the app closes and you have no idea why and you remove the stop flag and it starts working but doesntt make any sense untill one hour later you fucking notice....
+
+                //close the app window
+                window.close();
+            }
+        }  
+
+        CUDARenderer.renderFrame();
+
+        bodiesTexture = createBodiesTexture(static_bodies);
+
+        window.clear(sf::Color(0,0,0));
+
+        window.draw(testSprite);
+        window.draw((bodiesSprite));
+
+        window.display();
+
+    }
+}
+
+int main() {
+    cudaDebug();
+    return 0;
+
     vector<StaticBody> static_bodies = {StaticBody({100, 400}, 100, sf::Color(0, 201, 167)),
                                         StaticBody({400, 100}, 100, sf::Color(189, 56, 178)),
                                         StaticBody({700, 400}, 100, sf::Color(212, 55, 37)),

@@ -92,7 +92,7 @@ events:
       #$ C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.41.34120/bin/HostX64/x64/../../../../../../../VC/Auxiliary/Build/vcvars64.bat
       #$ ALLUSERSPROFILE=C:\\ProgramData
       #$ APPDATA=C:\\Users\\patry\\AppData\\Roaming
-      #$ CHROME_CRASHPAD_PIPE_NAME=\\\\.\\pipe\\crashpad_39140_AFVHHXZJWSTLSOKY
+      #$ CHROME_CRASHPAD_PIPE_NAME=\\\\.\\pipe\\crashpad_9460_FSJALQXCRPBYKNFK
       #$ CommandPromptType=Native
       #$ CommonProgramFiles=C:\\Program Files\\Common Files
       #$ CommonProgramFiles(x86)=C:\\Program Files (x86)\\Common Files
@@ -104,7 +104,7 @@ events:
       #$ CXX=C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.41.34120/bin/Hostx64/x64/cl.exe
       #$ DevEnvDir=C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\Common7\\IDE\\
       #$ DriverData=C:\\Windows\\System32\\Drivers\\DriverData
-      #$ EFC_15984=1
+      #$ EFC_6064=1
       #$ ELECTRON_NO_ATTACH_CONSOLE=1
       #$ ELECTRON_RUN_AS_NODE=1
       #$ ExtensionSdkDir=C:\\Program Files (x86)\\Microsoft SDKs\\Windows Kits\\10\\ExtensionSDKs
@@ -172,7 +172,7 @@ events:
       #$ VSCODE_IPC_HOOK=\\\\.\\pipe\\217f9219-1.92.2-main-sock
       #$ VSCODE_L10N_BUNDLE_LOCATION=
       #$ VSCODE_NLS_CONFIG={"userLocale":"en-us","osLocale":"en-gb","resolvedLanguage":"en","defaultMessagesFile":"C:\\\\Users\\\\patry\\\\AppData\\\\Local\\\\Programs\\\\Microsoft VS Code\\\\resources\\\\app\\\\out\\\\nls.messages.json","locale":"en","availableLanguages":{}}
-      #$ VSCODE_PID=39140
+      #$ VSCODE_PID=9460
       #$ vsconsoleoutput=1
       #$ VSINSTALLDIR=C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\
       #$ windir=C:\\Windows
@@ -417,8 +417,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-e2zotf"
-      binary: "C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-e2zotf"
+      source: "C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-szxaty"
+      binary: "C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-szxaty"
     cmakeVariables:
       CMAKE_CUDA_ARCHITECTURES: "52"
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
@@ -429,11 +429,11 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-e2zotf'
+        Change Dir: 'C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-szxaty'
         
-        Run Build Command(s): C:/Users/patry/VSCodeProjects/ninja/ninja.exe -v cmTC_effc2
-        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /GR /EHsc  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_effc2.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_effc2.dir\\ /FS -c "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCXXCompilerABI.cpp"
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_effc2.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_effc2.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_effc2.exe /implib:cmTC_effc2.lib /pdb:cmTC_effc2.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): C:/Users/patry/VSCodeProjects/ninja/ninja.exe -v cmTC_90400
+        [1/2] C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /GR /EHsc  /Zi /Ob0 /Od /RTC1 -MDd /showIncludes /FoCMakeFiles\\cmTC_90400.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_90400.dir\\ /FS -c "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCXXCompilerABI.cpp"
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_90400.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_90400.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_90400.exe /implib:cmTC_90400.lib /pdb:cmTC_90400.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -473,8 +473,8 @@ events:
     checks:
       - "Detecting CUDA compiler ABI info"
     directories:
-      source: "C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-4cadu9"
-      binary: "C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-4cadu9"
+      source: "C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-yhbsjg"
+      binary: "C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-yhbsjg"
     cmakeVariables:
       CMAKE_CUDA_ARCHITECTURES: "52"
       CMAKE_CUDA_FLAGS: "-D_WINDOWS -Xcompiler=\" /GR /EHsc\""
@@ -485,19 +485,19 @@ events:
       variable: "CMAKE_CUDA_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-4cadu9'
+        Change Dir: 'C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-yhbsjg'
         
-        Run Build Command(s): C:/Users/patry/VSCodeProjects/ninja/ninja.exe -v cmTC_b7fa1
-        [1/2] C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v12.6\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc"  -Xcompiler=" -Zi -Ob0 -Od /RTC1" "--generate-code=arch=compute_52,code=[compute_52,sm_52]" -Xcompiler=-MDd   -Xcompiler=-v -MD -MT CMakeFiles\\cmTC_b7fa1.dir\\CMakeCUDACompilerABI.cu.obj -MF CMakeFiles\\cmTC_b7fa1.dir\\CMakeCUDACompilerABI.cu.obj.d -x cu -c "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCUDACompilerABI.cu" -o CMakeFiles\\cmTC_b7fa1.dir\\CMakeCUDACompilerABI.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_b7fa1.dir\\,-FS
+        Run Build Command(s): C:/Users/patry/VSCodeProjects/ninja/ninja.exe -v cmTC_fffe8
+        [1/2] C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v12.6\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc"  -Xcompiler=" -Zi -Ob0 -Od /RTC1" "--generate-code=arch=compute_52,code=[compute_52,sm_52]" -Xcompiler=-MDd   -Xcompiler=-v -MD -MT CMakeFiles\\cmTC_fffe8.dir\\CMakeCUDACompilerABI.cu.obj -MF CMakeFiles\\cmTC_fffe8.dir\\CMakeCUDACompilerABI.cu.obj.d -x cu -c "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCUDACompilerABI.cu" -o CMakeFiles\\cmTC_fffe8.dir\\CMakeCUDACompilerABI.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_fffe8.dir\\,-FS
         cl : Command line warning D9002 : ignoring unknown option '-v'\x0d
         CMakeCUDACompilerABI.cu\x0d
         cl : Command line warning D9002 : ignoring unknown option '-v'\x0d
         CMakeCUDACompilerABI.cu\x0d
         CMakeCUDACompilerABI.cu\x0d
         cl : Command line warning D9002 : ignoring unknown option '-v'\x0d
-        tmpxft_0000145c_00000000-10_CMakeCUDACompilerABI.cudafe1.cpp\x0d
+        tmpxft_0000329c_00000000-10_CMakeCUDACompilerABI.cudafe1.cpp\x0d
         C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 'return': truncation from 'int' to 'bool'\x0d
-        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_b7fa1.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_b7fa1.dir\\CMakeCUDACompilerABI.cu.obj  /out:cmTC_b7fa1.exe /implib:cmTC_b7fa1.lib /pdb:cmTC_b7fa1.pdb /version:0.0 /machine:x64 -v /debug /INCREMENTAL  cudadevrt.lib  cudart_static.lib -LIBPATH:"C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6/lib/x64" && cd ."
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_fffe8.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_fffe8.dir\\CMakeCUDACompilerABI.cu.obj  /out:cmTC_fffe8.exe /implib:cmTC_fffe8.lib /pdb:cmTC_fffe8.pdb /version:0.0 /machine:x64 -v /debug /INCREMENTAL  cudadevrt.lib  cudart_static.lib -LIBPATH:"C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6/lib/x64" && cd ."
         
       exitCode: 0
   -
@@ -521,19 +521,19 @@ events:
       Parsed CUDA implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
-        ignore line: [Change Dir: 'C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-4cadu9']
+        ignore line: [Change Dir: 'C:/Users/patry/VSCodeProjects/gravitybasins/build/CMakeFiles/CMakeScratch/TryCompile-yhbsjg']
         ignore line: []
-        ignore line: [Run Build Command(s): C:/Users/patry/VSCodeProjects/ninja/ninja.exe -v cmTC_b7fa1]
-        ignore line: [[1/2] C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v12.6\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc"  -Xcompiler=" -Zi -Ob0 -Od /RTC1" "--generate-code=arch=compute_52 code=[compute_52 sm_52]" -Xcompiler=-MDd   -Xcompiler=-v -MD -MT CMakeFiles\\cmTC_b7fa1.dir\\CMakeCUDACompilerABI.cu.obj -MF CMakeFiles\\cmTC_b7fa1.dir\\CMakeCUDACompilerABI.cu.obj.d -x cu -c "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCUDACompilerABI.cu" -o CMakeFiles\\cmTC_b7fa1.dir\\CMakeCUDACompilerABI.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_b7fa1.dir\\ -FS]
+        ignore line: [Run Build Command(s): C:/Users/patry/VSCodeProjects/ninja/ninja.exe -v cmTC_fffe8]
+        ignore line: [[1/2] C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v12.6\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc"  -Xcompiler=" -Zi -Ob0 -Od /RTC1" "--generate-code=arch=compute_52 code=[compute_52 sm_52]" -Xcompiler=-MDd   -Xcompiler=-v -MD -MT CMakeFiles\\cmTC_fffe8.dir\\CMakeCUDACompilerABI.cu.obj -MF CMakeFiles\\cmTC_fffe8.dir\\CMakeCUDACompilerABI.cu.obj.d -x cu -c "C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCUDACompilerABI.cu" -o CMakeFiles\\cmTC_fffe8.dir\\CMakeCUDACompilerABI.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_fffe8.dir\\ -FS]
         ignore line: [cl : Command line warning D9002 : ignoring unknown option '-v'\x0d]
         ignore line: [CMakeCUDACompilerABI.cu\x0d]
         ignore line: [cl : Command line warning D9002 : ignoring unknown option '-v'\x0d]
         ignore line: [CMakeCUDACompilerABI.cu\x0d]
         ignore line: [CMakeCUDACompilerABI.cu\x0d]
         ignore line: [cl : Command line warning D9002 : ignoring unknown option '-v'\x0d]
-        ignore line: [tmpxft_0000145c_00000000-10_CMakeCUDACompilerABI.cudafe1.cpp\x0d]
+        ignore line: [tmpxft_0000329c_00000000-10_CMakeCUDACompilerABI.cudafe1.cpp\x0d]
         ignore line: [C:\\Program Files\\CMake\\share\\cmake-3.30\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 'return': truncation from 'int' to 'bool'\x0d]
-        ignore line: [[2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_b7fa1.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_b7fa1.dir\\CMakeCUDACompilerABI.cu.obj  /out:cmTC_b7fa1.exe /implib:cmTC_b7fa1.lib /pdb:cmTC_b7fa1.pdb /version:0.0 /machine:x64 -v /debug /INCREMENTAL  cudadevrt.lib  cudart_static.lib -LIBPATH:"C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6/lib/x64" && cd ."]
+        ignore line: [[2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && "C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_fffe8.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~2\\MICROS~2\\2022\\BUILDT~1\\VC\\Tools\\MSVC\\1441~1.341\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_fffe8.dir\\CMakeCUDACompilerABI.cu.obj  /out:cmTC_fffe8.exe /implib:cmTC_fffe8.lib /pdb:cmTC_fffe8.pdb /version:0.0 /machine:x64 -v /debug /INCREMENTAL  cudadevrt.lib  cudart_static.lib -LIBPATH:"C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.6/lib/x64" && cd ."]
         ignore line: []
         ignore line: []
         linker tool for 'CUDA': C:/PROGRA~2/MICROS~2/2022/BUILDT~1/VC/Tools/MSVC/1441~1.341/bin/Hostx64/x64/link.exe

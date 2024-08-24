@@ -5,9 +5,9 @@
 
 #define M_PI           3.14159265358979323846  /* pi */
 #define STATIC_BODY_DENSITY 0.1
-#define WINDOW_WIDTH 900
-#define WINDOW_HEIGHT 900
-#define RENDER_SCALE 4.0f
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
+#define RENDER_SCALE 5.0f
 
 #define GRAVITY_CONSTANT 9.81
 

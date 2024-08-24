@@ -13,7 +13,9 @@ file(GLOB CPP_SOURCES "src/*.cpp")
 # Define the executable
 add_executable(gravitybasins ${CPP_SOURCES} ${CUDA_SOURCES})
 
-# SFML settings
+#------- SFML -------
+
+# Set the path to SFML libraries and binaries
 set(SFML_LIB_DIR "${CMAKE_SOURCE_DIR}/external/SFML/lib")
 set(SFML_BIN_DIR "${CMAKE_SOURCE_DIR}/external/SFML/bin")
 set(SFML_LIB_DEST "${CMAKE_BINARY_DIR}")
@@ -53,18 +55,12 @@ target_link_libraries(gravitybasins PRIVATE "${SFML_LIB_DIR}/sfml-system.lib"
 # Include SFML headers
 target_include_directories(gravitybasins PRIVATE "${CMAKE_SOURCE_DIR}/external/SFML/include")
 
+# Add the include directory
+target_include_directories(gravitybasins PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
 # Enable CUDA compiler features
 set_property(TARGET gravitybasins PROPERTY CUDA_SEPARABLE_COMPILATION ON)
 
-# Ensure consistency in runtime library usage (specific to MSVC)
-if(MSVC)
-    target_compile_options(gravitybasins PRIVATE /MD)
-endif()
-
-# Set CUDA-specific compile options
-target_compile_options(gravitybasins PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-rdc=true>)
-
-# Use separate CUDA flags
-set_target_properties(gravitybasins PROPERTIES
-    CUDA_ARCHITECTURES "89"
-)
+# Ensure consistency in runtime library usage
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MD")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MD")

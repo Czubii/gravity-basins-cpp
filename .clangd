@@ -10,8 +10,9 @@ CompileFlags:
   Remove:
     - -forward-unknown-to-host-compiler
     - '-Xcompiler= /GR /EHsc'
-    - '-Xcompiler= -Zi -O2 -Ob1'
+    - '-Xcompiler=-O2 -Ob2'
     - '--generate-code=arch=compute_89,code=[compute_89,sm_89]'
     - '-Xcompiler=-MD'
     - -rdc=true
     - '-Xcompiler=-FdCMakeFiles\gravitybasins.dir\,-FS'
+    - '-Xcompiler= -Zi -O2 -Ob1'
